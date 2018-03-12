@@ -58,6 +58,11 @@ describe('BlogPosts API resource', function() {
                 .get('/posts')
                 .then(function(_res){
                     res = _res;
+                    //**************************************** */
+                    //res.body is an array of post OBJECTS
+                    //**************************************** */
+
+
                     // console.log("RES BODY KEYS ARE " + Object.keys(res.body));
                     // console.log("RES BODY POSTS ARRAY LENGTH " + res.body.length);
                     // console.log("RES BODY POST FIRST ITEM IS " + res.body[0].title);
@@ -72,7 +77,7 @@ describe('BlogPosts API resource', function() {
                 });
         }); //first it
 
-        xit('should return blog posts with correct fields', function() {
+        it('should return blog posts with correct fields', function() {
             let resPost;
             return chai.request(app)
                 .get('/posts')
@@ -88,29 +93,38 @@ describe('BlogPosts API resource', function() {
                             'id', 'author', 'content', 'title', 'created');
                     });
                     resPost = res.body[0];
+                    // console.log('resPost author is ' + resPost.author);
+                    // console.log('res Body first post author is ' + res.body[0].author);
+                    //this looks in Mongo DB to find a certain post ID
                     return BlogPost.findById(resPost.id);
                 })
                 .then(function(post) {
-                    expect(BlogPost.author).to.equal(post.author);
-                    expect(BlogPost.title).to.equal(post.title);
-                    expect(BlogPost.content).to.equal(post.content);    
+                    // console.log('Post author is ' + post.authorName);
+                    // console.log('resPost author is ' + resPost.author);
+
+                    expect(resPost.author).to.equal(post.authorName);
+                    expect(resPost.title).to.equal(post.title);
+                    expect(resPost.content).to.equal(post.content);    
                 });
         }); //second it
     }); //GET describe
 
-    xdescribe('POST endpoint', function() {
+    describe('POST endpoint', function() {
         it('should add new blog post', function() {
             let newPost = generateBlogPost();
             return chai.request(app)
                 .post('/posts')
                 .send(newPost)
                 .then(function(res){
+                    // console.log('newPost author is ' + newPost.author.firstName);
+                    // console.log('res body author is ' + res.body.author);
+
                     //this is "created OK" status
                     expect(res).to.have.status(201);
                     expect(res.body).to.be.a('object');
                     expect(res.body).to.include.keys(
                         'id','author','title','content','created');
-                    expect(res.body.author).to.equal(newPost.author);
+                    expect(res.body.author).to.equal(`${newPost.author.firstName} ${newPost.author.lastName}`);
                     expect(res.body.content).to.equal(newPost.content);
                     expect(res.body.title).to.equal(newPost.title);
                     expect(res.body.id).to.not.be.null;
@@ -126,8 +140,8 @@ describe('BlogPosts API resource', function() {
         }); //first POST it
     }); //POST describe
     
-    xdescribe('PUT endpoint', function(){
-        it('should update blog Post', function(res){
+    describe('PUT endpoint', function(){
+        it('should update blog Post', function(){
             const updatePost = {
                 title: "blah blah",
                 content: "Updating this post for a test"
@@ -148,17 +162,22 @@ describe('BlogPosts API resource', function() {
                     //204 status means successfully reset doc, no content to return
                     expect(res).to.have.status(204);
                     //find ID of post you just updated, return that as promise to next .then
+                    // console.log('updatePost is ' + updatePost.title);
                     return BlogPost.findById(updatePost.id);
                 })
                 .then(function(post){
+                    // console.log('updatePost title is ' + updatePost.title);
+                    // console.log('post title is ' + post.title);
                     expect(post.title).to.equal(updatePost.title);
                     expect(post.content).to.equal(updatePost.content);
+                    // post.title.should.equal(updateData.title);
+                    // post.content.should.equal(updateData.content);
                 });
         }); //first PUT it
     }); //PUT describe
 
-    xdescribe('DELETE endpoint', function() {
-        it('should delete a blog post', function(res){
+    describe('DELETE endpoint', function() {
+        it('should delete a blog post', function(){
             //get DB post id, make delete request, check DB to see it's deleted 
             let post;
 
