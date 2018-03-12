@@ -2,3 +2,10 @@ language: node_js
 node_js: node
 services:
 - mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: Xt5Xwu8kZE21kyRr7OS9xs5Zgecu1X3evb9fGskV3W/DhCuQApRa090VlDMnaNrkV2zrzG/pRryYweqMguSL0QSVveIEHycByFXpGF6WvogL0ARH9hyw7DiFbos+oohvu2+3iTwfExm9owePb5LN7ZCUfgi9ySV8oKwD773iFvtXJksk2FddgG2IDTKSwHJxtChGRzQqkDFosD+pcNa1z/1iXAJfEzEAP09y3kK0beu621cd6LOKrrY7tYZrLsIiR5m0CROQScXK4dMzby+CpSFJ0sNF9mDGzqC+dHg1V/M2mdwh4IaKkh/CZ8deFijNYDC0KiOVAjRiqd9ichamuNdGmu2GjrIlpe0UiY8olA+SOS3G/5zLhY2GO4/MzbdNFqc+JgrYuT0j6Yu8PMV09qruRTAkeeVfPP3t5K9Zgsfjdx5vXj7TiSOlNQw7uHBghStwPMnDyh3o3e7C+qR3rhpdl2yEJp9zXmPQZmSkUsICAlt9dJSx0pCUTCJ7tu4haN+DOP0ggGN650bg2BaAG8H7c8xKnWf3cBh85RTCDIZpMPoGgC+5dZwn6G9RsUIK9ZsEzs+SHGMVSxE+lYnFTIXZuboqMIotdlKv4w0WfNPNnBYdYDs8ircTsrmGYLjW54VcUY0qcHkEnmfvIomhDS6Q5QnwD+geUqChvES6Gi8=
+  app: enigmatic-bastion-91345
+  on:
+    repo: mike31415/mongoose-blog-ci
